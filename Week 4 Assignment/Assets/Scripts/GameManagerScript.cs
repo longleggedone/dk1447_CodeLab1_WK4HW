@@ -8,6 +8,8 @@ public class GameManagerScript : MonoBehaviour {
 	public Text scoreText;
 	public Text healthText;
 
+	public GameObject player;
+
 	private int scoreToAdvance = 100;
 
 	private int score;
@@ -74,10 +76,12 @@ public class GameManagerScript : MonoBehaviour {
 	void Update () {
 		if(Score == scoreToAdvance){
 			scoreToAdvance += 100;
+			player.transform.position = new Vector3 (0,0,0);
 			SceneManager.LoadScene("Scene 2");
 		}
 		if(Health == 0){
 			Health = HEALTH_MAX;
+			player.transform.position = new Vector3 (0,0,0);
 			SceneManager.LoadScene("Scene 1");
 		}
 	}
