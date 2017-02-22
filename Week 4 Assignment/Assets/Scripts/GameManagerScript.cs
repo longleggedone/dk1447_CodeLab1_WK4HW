@@ -8,12 +8,14 @@ public class GameManagerScript : MonoBehaviour {
 	public Text scoreText; //ui text for score
 
 	public Text healthText; //ui text for health
+
+	public string playerName = "PlayerName";
 	 
 	public GameObject player; //reference to player
 
 	private int scoreToAdvance = 100; //score needed to advance to next level
 
-	private const string PREF_HIGH_SCORE = "highScorePref";
+	private const string PREF_HIGH_SCORE = "highScorePref"; //constant high score
 
 	private int score; //player score
 
@@ -23,24 +25,25 @@ public class GameManagerScript : MonoBehaviour {
 		}
 		set{
 			score = value;
-			if(score > HighScore){
-				HighScore = score;
+			if(score > HighScore){ //if score exceeds high score
+				HighScore = score; //update high score to the new score
 			}
 			scoreText.text = "Score: " + score;//sets ui text for score to equal current score
 			Debug.Log ("Score: " + Score);
 		}
 	} 
 
-	private int highScore = 0;
+	private int highScore = 0; //high score
 
-	public int HighScore {
+	public int HighScore {//property for high score
 		get{
-			highScore = PlayerPrefs.GetInt(PREF_HIGH_SCORE);
-			return highScore;
+			highScore = PlayerPrefs.GetInt(PREF_HIGH_SCORE); //sets highScore to equal the saved player pref high score
+			return highScore; //returns this highScore
 		}
 		set{
-			highScore = value;
-			PlayerPrefs.SetInt(PREF_HIGH_SCORE, highScore);
+			highScore = value; 
+			PlayerPrefs.SetInt(PREF_HIGH_SCORE, highScore); //sets player constant high score to equal the new high score
+			FileIOScript.instance.SaveHighScore(playerName, highScore.ToString());
 		}
 	}
 
@@ -77,6 +80,8 @@ public class GameManagerScript : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+		PlayerPrefs.DeleteAll();
+
 		if(instance == null){ //checks if instance already exists
 			instance = this; //if no instance already exists, make this the instance
 			DontDestroyOnLoad(this); //sets this to not be destroyed when a scene is loaded
